@@ -34,22 +34,17 @@ from .config import DB_NAME,USER, PASSWORD, HOST
 
 def showform(request):
     form = FormReviewForm(request.POST or None)
-
     info = request.GET.get("docId")
-
-
-    test = get_json(token=get_token(), id_Dock=info)
-    # print(test)
-    dictData = json.dumps(test)
+    all_info = get_json(token=get_token(), id_Dock=info)
+    dictData = json.dumps(all_info)
     data = json.loads(dictData)
     docId_user = (data["docId"])
     docType_user = (data["docType"]["value"])
     docOper_user = (data["docOper"]["value"])
     department_user = (data["department"]["value"])
     lastUpdateDate_user = (data["lastUpdateDate"])
-
     region = (department_user.split('МВС')[1])
-    department_output=''
+    department_output = ''
     for c in department_user:
         if c not in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'):
             department_output = department_output + c
@@ -62,13 +57,12 @@ def showform(request):
         print("Error")
 
 
-    return render(request, 'contactform.html',{'form': form, 'currentUrl':info,
-                                               'doc_Id': docId_user, 'docType': docType_user, 'docOper': docOper_user,  'lastUpdateDate': lastUpdateDate_user,
-                                               'department':department_output, 'region':region, 'nnn':nnn,
+    return render(request, 'contactform.html',{'form': form, 'currentUrl': info,
+                                               'doc_Id': docId_user, 'docType': docType_user, 'docOper': docOper_user, 'lastUpdateDate': lastUpdateDate_user,
+                                               'department': department_output, 'region': region, 'nnn': nnn,
                                                })
 
 def get_token():
-
     data = {'grant_type': 'password',
             'username': 'internal',
             'password': 'internal'}
@@ -81,15 +75,12 @@ def get_token():
     # headers = {'Authorization': 'Bearer ' + token['access_token'],
     #            'Content-Type': 'application/json'}
     # #equest.session['main_api_token'] = headers
-
     return 'Bearer ' + token['access_token']
 
 
 def get_json(token, id_Dock):
-
     headers = {"Authorization": token}
-    res = requests.get(url=f'http://mainapi.hsc.gov.ua/oper-service/opers/{id_Dock}', headers = headers).json()
-
+    res = requests.get(url=f'http://mainapi.hsc.gov.ua/oper-service/opers/{id_Dock}', headers=headers).json()
     return res
 
 
