@@ -1,9 +1,10 @@
-from .forms import FormReviewForm
-import requests
 import json
+
+import requests
 from django.shortcuts import render
-import pymysql
-from .config import DB_NAME,USER, PASSWORD, HOST
+
+from .forms import FormReviewForm
+
 
 #
 # try:
